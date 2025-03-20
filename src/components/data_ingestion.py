@@ -3,6 +3,7 @@ import sys
 from src.exception import CustomException
 from src.logger import logging
 import pandas as pd
+import numpy as np
 
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
@@ -25,9 +26,27 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info("Entered the data ingestion method or component")
         try:
-            df=pd.read_csv(r'data\Food1.csv')
+            df=pd.read_csv(r'data\Food1.csv',encoding='latin-1')
             logging.info('Read the dataset as dataframe')
+            def haversine_vectorized(lat1, lon1, lat2, lon2):
+                lat1, lon1, lat2, lon2 = map(np.radians, [lat1, lon1, lat2, lon2])
+                dlat = lat2 - lat1
+                dlon = lon2 - lon1
+                a = np.sin(dlat / 2.0)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2.0)**2
+                c = 2 * np.arcsin(np.sqrt(a))
+                r = 6371
+                return c * r
 
+            df['distance_km'] = haversine_vectorized(
+                df['Restaurant_latitude'].values,
+                df['Restaurant_longitude'].values,
+                df['Delivery_location_latitude'].values,
+                df['Delivery_location_longitude'].values
+            )
+
+            df.drop(["Restaurant_latitude","Restaurant_longitude","Delivery_location_latitude","Delivery_location_longitude","ID","Delivery_person_ID"],axis=1,inplace=True)
+            
+            
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
 
             df.to_csv(self.ingestion_config.raw_data_path,index=False,header=True)
@@ -52,6 +71,7 @@ class DataIngestion:
 if __name__=="__main__":
     obj=DataIngestion()
     train_data,test_data=obj.initiate_data_ingestion()
+
 
     data_transformation=DataTransformation()
     train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data)
