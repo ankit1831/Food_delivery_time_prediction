@@ -7,92 +7,174 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f8f9fa;
-            margin: 0;
+            max-width: 600px;
+            margin: 0 auto;
             padding: 20px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
         }
         h2 {
+            text-align: center;
             color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
         }
         form {
-            background: white;
-            padding: 20px;
+            background-color: white;
+            padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            margin: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         label {
-            font-weight: bold;
             display: block;
             margin-top: 10px;
+            color: #555;
+            font-weight: bold;
         }
-        select, input {
+        input, select {
             width: 100%;
             padding: 8px;
             margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
-        button {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #28a745;
+        input[type="submit"] {
+            background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .result {
             margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            form {
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
-
     <h2>Predict Food Delivery Time</h2>
-
     <form action="/predict" method="post">
-        <label for="age">Delivery Person's Age:</label>
-        <input type="number" id="age" name="Delivery_person_Age" min="15" max="50" required>
-
-        <label for="rating">Delivery Person's Rating:</label>
-        <input type="number" id="rating" name="Delivery_person_Ratings" min="1" max="5" step="0.1" required>
-
-        <label for="order">Type of Order:</label>
-        <select id="order" name="Type_of_order" required>
-            <option value="Snack">Snack</option>
-            <option value="Meal">Meal</option>
-            <option value="Drinks">Drinks</option>
-            <option value="Buffet">Buffet</option>
-        </select>
-
-        <label for="vehicle">Type of Vehicle:</label>
-        <select id="vehicle" name="Type_of_vehicle" required>
-            <option value="motorcycle">Motorcycle</option>
-            <option value="scooter">Scooter</option>
-            <option value="electric_scooter">Electric Scooter</option>
-            <option value="bicycle">Bicycle</option>
-        </select>
-
-        <label for="distance">Distance (km):</label>
-        <input type="number" id="distance" name="distance_km" step="0.1" required>
-
-        <button type="submit">Predict Delivery Time</button>
-    </form>
-
-    {% if prediction %}
-        <div class="result">
-            {{ prediction }}
+        <div>
+            <label for="delivery-person-age">Delivery Person Age (20-45):</label>
+            <input type="number" id="delivery-person-age" name="Delivery_person_Age" min="20" max="45" required>
         </div>
-    {% endif %}
 
+        <div>
+            <label for="delivery-person-rating">Delivery Person Rating (1-5):</label>
+            <input type="number" id="delivery-person-rating" name="Delivery_person_Ratings" step="0.1" min="1" max="5" required>
+        </div>
+
+        <div>
+            <label for="weather-conditions">Weather Conditions:</label>
+            <select id="weather-conditions" name="Weatherconditions">
+                <option value="conditions Fog">Fog</option>
+                <option value="conditions Cloudy">Cloudy</option>
+                <option value="conditions Stormy">Stormy</option>
+                <option value="conditions Windy">Windy</option>
+                <option value="conditions Sandstorms">Sandstorms</option>
+                <option value="conditions Sunny">Sunny</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="traffic-density">Road Traffic Density:</label>
+            <select id="traffic-density" name="Road_traffic_density">
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+                <option value="Jam">Jam</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="vehicle-condition">Vehicle Condition (0-2):</label>
+            <input type="number" id="vehicle-condition" name="Vehicle_condition" min="0" max="2" required>
+        </div>
+
+        <div>
+            <label for="order-type">Type of Order:</label>
+            <select id="order-type" name="Type_of_order">
+                <option value="Snack">Snack</option>
+                <option value="Meal">Meal</option>
+                <option value="Drinks">Drinks</option>
+                <option value="Buffet">Buffet</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="vehicle-type">Type of Vehicle:</label>
+            <select id="vehicle-type" name="Type_of_vehicle">
+                <option value="motorcycle">Motorcycle</option>
+                <option value="scooter">Scooter</option>
+                <option value="electric_scooter">Electric Scooter</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="multiple-deliveries">Multiple Deliveries (0-3):</label>
+            <input type="number" id="multiple-deliveries" name="multiple_deliveries" min="0" max="3" required>
+        </div>
+
+        <div>
+            <label for="festival">Festival:</label>
+            <select id="festival" name="Festival">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="city">City:</label>
+            <select id="city" name="City">
+                <option value="Metropolitian">Metropolitan</option>
+                <option value="Urban">Urban</option>
+                <option value="Semi-Urban">Semi-Urban</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="day">Day:</label>
+            <select id="day" name="day">
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="time-category">Time Category:</label>
+            <select id="time-category" name="Time_Category">
+                <option value="Morning">Morning</option>
+                <option value="Afternoon">Afternoon</option>
+                <option value="Evening">Evening</option>
+                <option value="Night">Night</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="order-ready">Order Ready Time (mins):</label>
+            <input type="number" id="order-ready" name="Order_ready" min="0" required>
+        </div>
+
+        <div>
+            <label for="distance">Distance (km):</label>
+            <input type="number" id="distance" name="distance_km" step="0.1" min="0" required>
+        </div>
+
+        <input type="submit" value="Predict Delivery Time">
+    </form>
 </body>
 </html>
