@@ -76,7 +76,7 @@ The models are evaluated based on RMSE, R-squared, and MAE.
 **Ankit1831**
 - GitHub: [ankit1831](https://github.com/ankit1831)
 
-📌 Feel free to contribute, open issues, or provide feedback!
+📌 Feel free to provide feedback!
 
 ---
 🌟 If you find this project useful, don't forget to star ⭐ the repository!
